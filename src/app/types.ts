@@ -1,20 +1,3 @@
-export interface Data {
-  view: View;
-}
-
-export interface View {
-  id: string;
-  plannings: Plannings;
-  __typename: string;
-}
-
-export interface Plannings {
-  nodes: Node[];
-  pageInfo: PageInfo;
-  totalCount: number;
-  __typename: string;
-}
-
 export interface Node {
   id: string;
   beginsAt: string;
@@ -37,43 +20,43 @@ export interface Node {
   aggregation: Aggregation;
 }
 
-export enum NodeTypename {
+enum NodeTypename {
   CorePlanning = "Core_Planning",
 }
 
-export interface Aggregation {
+interface Aggregation {
   aggregationId: string;
   value: Value;
   __typename: AggregationTypename;
 }
 
-export enum AggregationTypename {
+enum AggregationTypename {
   CoreAggregation = "Core_Aggregation",
 }
 
-export interface Value {
+interface Value {
   text: Type;
   __typename: ValueTypename;
 }
 
-export enum ValueTypename {
+enum ValueTypename {
   CoreAggregationTextValue = "Core_AggregationTextValue",
 }
 
-export enum Type {
+enum Type {
   CharlaVirtual = "Charla virtual",
   WorkshopVirtual = "Workshop virtual",
 }
 
-export enum Format {
+enum Format {
   Physical = "PHYSICAL",
 }
 
-export enum Visibility {
+enum Visibility {
   Public = "PUBLIC",
 }
 
-export interface WithEvent {
+interface WithEvent {
   title: string;
   firstSpeakers: any[];
   exhibitorList: ExhibitorList[];
@@ -81,31 +64,23 @@ export interface WithEvent {
   bookmark: Bookmark;
 }
 
-export enum WithEventTypename {
+enum WithEventTypename {
   CorePlanningWithEvent = "Core_PlanningWithEvent",
 }
 
-export interface Bookmark {
+interface Bookmark {
   isBookmarked: boolean;
   canBookmark: boolean;
   __typename: BookmarkTypename;
 }
 
-export enum BookmarkTypename {
+enum BookmarkTypename {
   CoreBookmarkComponent = "Core_BookmarkComponent",
 }
 
-export interface ExhibitorList {
+interface ExhibitorList {
   id: string;
   name: string;
   logoUrl: string;
-  __typename: string;
-}
-
-export interface PageInfo {
-  hasNextPage: boolean;
-  endCursor: string;
-  hasPreviousPage: boolean;
-  startCursor: string;
   __typename: string;
 }

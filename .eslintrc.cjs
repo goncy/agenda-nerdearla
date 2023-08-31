@@ -37,6 +37,7 @@ module.exports = {
         plugins: ["prettier-plugin-tailwindcss"],
       },
     ],
+    "@typescript-eslint/no-confusing-void-expression": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "import/no-default-export": "off",
     "import/order": [
