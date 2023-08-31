@@ -3,6 +3,7 @@
 import type {Event} from "@/types";
 
 import {useSearchParams} from "next/navigation";
+import {useMemo} from "react";
 
 import Filters from "./filters";
 
@@ -18,24 +19,29 @@ function getUniqueValues<T>(array: T[], selector: (item: T) => string) {
 
 export default function Events({events}: {events: Event[]}) {
   const searchParams = useSearchParams();
-  const datesOptions = getUniqueValues(events, (talk) => talk.beginsAt.split("T")[0]);
-  const tracksOptions = getUniqueValues(events, (talk) => talk.type);
-  const stagesOptions = getUniqueValues(events, (talk) => talk.place);
+  const datesOptions = useMemo(
+    () => getUniqueValues(events, (talk) => talk.beginsAt.split("T")[0]),
+    [events],
+  );
+  const tracksOptions = useMemo(() => getUniqueValues(events, (talk) => talk.type), [events]);
+  const stagesOptions = useMemo(() => getUniqueValues(events, (talk) => talk.place), [events]);
 
-  const selectedDates = searchParams.getAll("date");
-  const selectedTracks = searchParams.getAll("track");
-  const selectedStages = searchParams.getAll("stage");
+  const matches = useMemo(() => {
+    const selectedDates = searchParams.getAll("date");
+    const selectedTracks = searchParams.getAll("track");
+    const selectedStages = searchParams.getAll("stage");
 
-  const matches = events.filter((talk) => {
-    if (selectedDates.length && !selectedDates.some((date) => talk.beginsAt.includes(date)))
-      return false;
-    if (selectedTracks.length && !selectedTracks.some((track) => track === (talk.type as string)))
-      return false;
-    if (selectedStages.length && !selectedStages.some((stage) => stage === talk.place))
-      return false;
+    return events.filter((talk) => {
+      if (selectedDates.length && !selectedDates.some((date) => talk.beginsAt.includes(date)))
+        return false;
+      if (selectedTracks.length && !selectedTracks.some((track) => track === (talk.type as string)))
+        return false;
+      if (selectedStages.length && !selectedStages.some((stage) => stage === talk.place))
+        return false;
 
-    return true;
-  });
+      return true;
+    });
+  }, [events, searchParams]);
 
   return (
     <section className="grid gap-8">
@@ -47,7 +53,6 @@ export default function Events({events}: {events: Event[]}) {
               <img
                 alt={talk.withEvent.title}
                 className="h-[350px] bg-slate-900 object-contain md:h-[240px]"
-                height={205}
                 src={talk.bannerUrl}
               />
               <h1 className="text-xl font-semibold leading-tight">{talk.withEvent.title}</h1>

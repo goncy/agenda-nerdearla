@@ -1,6 +1,7 @@
 "use client";
 
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {useMemo} from "react";
 
 const DATES = {
   "2023-09-26": "Martes 26",
@@ -18,9 +19,10 @@ export default function Filters({
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const dates = searchParams.getAll("date");
-  const tracks = searchParams.getAll("track");
-  const stages = searchParams.getAll("stage");
+
+  const dates = useMemo(() => searchParams.getAll("date"), [searchParams]);
+  const tracks = useMemo(() => searchParams.getAll("track"), [searchParams]);
+  const stages = useMemo(() => searchParams.getAll("stage"), [searchParams]);
 
   function handleChange(key: "date" | "track" | "stage", value: string) {
     const newSearchParams = new URLSearchParams(searchParams);
