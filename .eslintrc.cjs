@@ -79,6 +79,7 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/require-await": "off",
     "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {

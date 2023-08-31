@@ -1,4 +1,4 @@
-export interface Node {
+export interface Event {
   id: string;
   beginsAt: string;
   endsAt: string;
