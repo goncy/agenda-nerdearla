@@ -1,4 +1,8 @@
+"use client";
+
 import type {Event} from "@/types";
+
+import {useSearchParams} from "next/navigation";
 
 import Filters from "./filters";
 
@@ -12,27 +16,15 @@ function getUniqueValues<T>(array: T[], selector: (item: T) => string) {
   }, []);
 }
 
-function getValueAsArray(value: string | string[] | undefined) {
-  if (Array.isArray(value)) return value;
-  else if (value) return [value];
-
-  return [];
-}
-
-export default async function Events({
-  searchParams,
-  events,
-}: {
-  searchParams: {date: string | string[]; track: string | string[]; stage: string | string[]};
-  events: Event[];
-}) {
+export default function Events({events}: {events: Event[]}) {
+  const searchParams = useSearchParams();
   const datesOptions = getUniqueValues(events, (talk) => talk.beginsAt.split("T")[0]);
   const tracksOptions = getUniqueValues(events, (talk) => talk.type);
   const stagesOptions = getUniqueValues(events, (talk) => talk.place);
 
-  const selectedDates = getValueAsArray(searchParams.date);
-  const selectedTracks = getValueAsArray(searchParams.track);
-  const selectedStages = getValueAsArray(searchParams.stage);
+  const selectedDates = searchParams.getAll("date");
+  const selectedTracks = searchParams.getAll("track");
+  const selectedStages = searchParams.getAll("stage");
 
   const matches = events.filter((talk) => {
     if (selectedDates.length && !selectedDates.some((date) => talk.beginsAt.includes(date)))
